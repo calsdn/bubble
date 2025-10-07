@@ -644,7 +644,7 @@ export default function MatchScreen() {
           edges={["top"]}
         >
           <LinearGradient
-            colors={["#e3f0ff", "#cbe2ff", "#e3f0ff"]}
+            colors={["#B7D6FE", "#F7FAFF"]}
             start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
             style={StyleSheet.absoluteFill}
@@ -652,60 +652,23 @@ export default function MatchScreen() {
 
           {/* User's bubble at top left */}
           {userBubble && (
-            <View
+            <TouchableOpacity
               style={[
-                styles.userBubbleContainer,
+                styles.pinIconWrap,
                 {
-                  left: Math.max(
-                    0,
-                    (screenWidth - centerBubbleDiameter) / 2 -
-                      userBubbleDiameter * 0.18
-                  ),
+                  position: "absolute",
+                  left: 20,
                   top: insets.top + 24,
-                  width: userBubbleDiameter,
-                  height: userBubbleDiameter + 24,
-                },
+                  zIndex: 50,
+                }
               ]}
+              onPress={() => userBubble && handlePopBubble(userBubble.id)}
+              activeOpacity={0.7}
             >
-              <BlurView
-                style={styles.userBubbleBlur}
-                intensity={Platform.OS === "ios" ? 60 : 80}
-                tint="light"
-              >
-                <Text style={styles.userBubbleName}>{userBubble.name}</Text>
-                <View style={styles.userBubbleRow}>
-                  {userBubble.members.map((user, idx) => (
-                    <View
-                      key={user.id}
-                      style={{
-                        marginLeft: idx > 0 ? -userBubbleImageSize * overlapRatio : 0,
-                        zIndex: userBubble.members.length - idx,
-                      }}
-                    >
-                      <Image
-                        source={{ uri: user.signedUrl || user.avatar_url }}
-                        style={{
-                          width: userBubbleImageSize,
-                          height: userBubbleImageSize,
-                          borderRadius: userBubbleImageSize / 2,
-                          borderWidth: 2,
-                          borderColor: "#fff",
-                        }}
-                      />
-                    </View>
-                  ))}
-                </View>
-              </BlurView>
-              <TouchableOpacity 
-                style={styles.pinIconWrap}
-                onPress={() => userBubble && handlePopBubble(userBubble.id)}
-                activeOpacity={0.7}
-              >
-                <View style={styles.pinCircle}>
-                  <Feather name="feather" size={18} color="#fff" />
-                </View>
-              </TouchableOpacity>
-            </View>
+              <View style={styles.pinCircle}>
+                <Feather name="feather" size={18} color="#fff" />
+              </View>
+            </TouchableOpacity>
           )}
 
           {/* Message Display */}
@@ -766,7 +729,7 @@ export default function MatchScreen() {
         edges={["top"]}
       >
         <LinearGradient
-          colors={["#e3f0ff", "#cbe2ff", "#e3f0ff"]}
+          colors={["#B7D6FE", "#F7FAFF"]}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
           style={StyleSheet.absoluteFill}
@@ -782,91 +745,24 @@ export default function MatchScreen() {
           return null;
         })()}
         {userBubble && (
-          <View
+          <TouchableOpacity
             style={[
-              styles.userBubbleContainer,
+              styles.pinIconWrap,
               {
-                left: Math.max(
-                  0,
-                  (screenWidth - centerBubbleDiameter) / 2 -
-                    userBubbleDiameter * 0.18
-                ),
+                position: "absolute",
+                left: 20,
                 top: insets.top + 24,
-                width: userBubbleDiameter,
-                height: userBubbleDiameter + 24,
-              },
+                zIndex: 50,
+              }
             ]}
+            onPress={() => userBubble && handlePopBubble(userBubble.id)}
+            activeOpacity={0.7}
+            disabled={!userBubble || userBubbleLoading}
           >
-            <BlurView
-              style={styles.userBubbleBlur}
-              intensity={Platform.OS === "ios" ? 60 : 80}
-              tint="light"
-            >
-              <Text style={styles.userBubbleName}>{userBubble.name}</Text>
-              <View style={styles.userBubbleRow}>
-                {userBubble.members.map((user, idx) => {
-                  console.log(`[MatchScreen] 🖼️ Rendering member ${idx}:`, {
-                    id: user.id,
-                    name: `${user.first_name} ${user.last_name}`,
-                    avatarUrl: user.avatar_url,
-                    signedUrl: user.signedUrl
-                  });
-
-                  return (
-                    <View
-                      key={user.id}
-                      style={{
-                        marginLeft: idx > 0 ? -userBubbleImageSize * overlapRatio : 0,
-                        zIndex: userBubble.members.length - idx, // Highest index gets highest z-index
-                      }}
-                    >
-                      <View
-                        style={{
-                          position: "relative",
-                          width: userBubbleImageSize,
-                          height: userBubbleImageSize,
-                        }}
-                      >
-                        <Image
-                          source={{ uri: user.signedUrl || user.avatar_url }}
-                          style={{
-                            width: userBubbleImageSize,
-                            height: userBubbleImageSize,
-                            borderRadius: userBubbleImageSize / 2,
-                            borderWidth: 2,
-                            borderColor: "#fff",
-                          }}
-                          onError={() => console.log(`[MatchScreen] ❌ Image load error for member ${idx}:`, user.signedUrl || user.avatar_url)}
-                          onLoad={() => console.log(`[MatchScreen] ✅ Image loaded for member ${idx}`)}
-                        />
-                        <Image
-                          source={require("@/assets/images/bubble-frame.png")}
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: userBubbleImageSize,
-                            height: userBubbleImageSize,
-                            resizeMode: "cover",
-                          }}
-                        />
-                      </View>
-                    </View>
-                  );
-                })}
-              </View>
-            </BlurView>
-            <TouchableOpacity 
-              style={styles.pinIconWrap}
-              onPress={() => userBubble && handlePopBubble(userBubble.id)}
-              activeOpacity={0.7}
-              disabled={!userBubble || userBubbleLoading}
-            >
-              <View style={styles.pinCircle}>
-                <Feather name="feather" size={18} color="#fff" />
-              </View>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.pinCircle}>
+              <Feather name="feather" size={18} color="#fff" />
+            </View>
+          </TouchableOpacity>
         )}
 
         {/* MatchCard for the current group */}
@@ -1286,7 +1182,7 @@ const styles = StyleSheet.create({
   xButton: {
     position: "absolute",
     left: 32,
-    bottom: 48,
+    bottom: 10,
     backgroundColor: "#8ec3ff",
     width: 74,
     height: 74,
@@ -1302,7 +1198,7 @@ const styles = StyleSheet.create({
   checkButton: {
     position: "absolute",
     right: 32,
-    bottom: 48,
+    bottom: 10,
     backgroundColor: "#8ec3ff",
     width: 74,
     height: 74,
@@ -1339,7 +1235,7 @@ const styles = StyleSheet.create({
 
   swipeControls: {
     position: "absolute",
-    bottom: 48,
+    bottom: 10,
     left: 0,
     right: 0,
     flexDirection: "row",
