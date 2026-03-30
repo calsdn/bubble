@@ -147,6 +147,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({
           )}
         </View>
 
+        <Image
+          source={require("@/assets/images/bubble_group-frame.png")}
+          style={styles.groupFrameOverlay}
+        />
       </BlurView>
     </View>
   );
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     borderRadius: cardDiameter / 2,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#CEE3FF",
+    backgroundColor: "transparent",
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
   groupName: {
     fontSize: 28,
     fontWeight: "700",
-    color: "#303030",
+    color: "#000000",
     marginBottom: 18,
     marginTop: 12,
     textAlign: "center",
@@ -231,6 +235,14 @@ const styles = StyleSheet.create({
     left: 0,
     width: memberImageSize,
     height: memberImageSize,
+    resizeMode: "cover",
+  },
+  groupFrameOverlay: {
+    position: "absolute",
+    top: -(cardDiameter * 0.1),
+    left: -(cardDiameter * 0.1),
+    width: cardDiameter * 1.2,
+    height: cardDiameter * 1.2,
     resizeMode: "cover",
   },
 });
